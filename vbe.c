@@ -287,8 +287,8 @@ int VBE_search_a_mode(void)
 
 int VBE_setmode(int mode)
 {
-        char *p = screen_linear ;
-        int i ;
+        //char *p = screen_linear ;
+        //int i ;
         struct VBEMODEINFO mi ;
         if (VBE_getmodeinfo(mode&0x3fff,&mi)) {
                 vbemode_linewidth = mi.bytesperscanline ;

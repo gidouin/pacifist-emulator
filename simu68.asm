@@ -26,12 +26,9 @@ FromSimu68 EQU 1                                ; supress EXTRN warnings
 
         DATASEG
 
-        EXTRN is68030 : dword
         EXTRN Nb_Cycles     : dword
         EXTRN Total_Raster  : dword
 
-
-        EXTRN init_68030 : NEAR
 
         PUBLIC thisraster_cycles
         PUBLIC  opcode_cycles

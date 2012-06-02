@@ -9,10 +9,6 @@
 
 
 unsigned int Cycles_Per_RasterLine = 512 ;
-//unsigned int RasterLines_Per_TimerC = 78 ;
-
-//static int SkipVBL = 0;
-
 
 extern unsigned int Nb_RasterLines_Last_VBL ;
 extern unsigned int Total_RasterLines ;
@@ -195,7 +191,7 @@ char getpixelmed(char *p,int d) ;
 char getpixel(int x,int y,int plan,int bits24)
 {
         char *p ;
-        volatile char c,c2 ;
+        volatile char c;
         int x1;
 
         if (bits24) {

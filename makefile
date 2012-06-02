@@ -10,7 +10,7 @@
 #---------------------------------------------------------- macros g‚n‚rales
 
 guru    = no
-debug   = yes
+debug   = no
 sound   = yes
 profile = no
 
@@ -26,7 +26,7 @@ LIB2= gravis\ultra1wc.lib
 
 ASMFLAGS = /m2 /z /zi /i$(INCDIR)
 CFLAGS   = /zq /ox /4s /7 /d2 /s /zp4 /w3 /i=$(INCDIR)
-LNKOPT   = SYSTEM dos4g DEBUG all OPTION SYMFILE=$(EXE)
+#LNKOPT   = SYSTEM dos4g DEBUG all OPTION SYMFILE=$(EXE)
 LNKOPT   = SYSTEM pmodew DEBUG all LIB $(LIB1) LIB $(LIB2) OPTION SYMFILE=$(EXE)
 
 SIMU_OBJECTS = $(OBJDIR)\pchard.obj &
@@ -39,7 +39,6 @@ SIMU_OBJECTS = $(OBJDIR)\pchard.obj &
 	       $(OBJDIR)\i_branch.obj &
 	       $(OBJDIR)\i_movem.obj  &
 	       $(OBJDIR)\opcodes.obj &
-               $(OBJDIR)\68030.obj &
                $(OBJDIR)\filesel.obj &
                $(OBJDIR)\blitter.obj
 

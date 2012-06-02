@@ -408,10 +408,6 @@ static int parse_options()
                                                         else {isTrueColor = FALSE ; if (!isentry("no",param)) fprintf(stderr,"*** error in INI file section line %d. ***\n",nbline) ;}
                                                         goto nxtline ;}
 
-               if (isentry("68030",entryname)) {get_next_word(&pt,param) ; if (isentry("yes",param)) is68030 = TRUE ;
-                                                        else {is68030 = FALSE ; if (!isentry("no",param)) fprintf(stderr,"*** error in INI file section line %d. ***\n",nbline) ;}
-                                                        goto nxtline ;}
-
                if (isentry("autorun",entryname)) {if (commandline_autorun) goto nxtline;get_next_word(&pt,param) ; if (isentry("yes",param)) isAutoRun = TRUE ;
                                                         else {isAutoRun = FALSE ; if (!isentry("no",param)) fprintf(stderr,"*** error in INI file section line %d. ***\n",nbline) ;}
                                                         goto nxtline ;}
