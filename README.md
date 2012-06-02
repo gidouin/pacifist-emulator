@@ -1,9 +1,11 @@
 pacifist-emulator
 =================
-Twitter: gidouin
-mail:    gidouin atgmaildotcom
 
 PaCifiST, Atari ST Emulator on PC, back in 1996.
+
+Twitter: [gidouin](https://twitter.com/gidouin)
+
+Mail:    gidouin atgmaildotcom
 
 The last release of PaCifiST was on 1998-06-07 (0.49b), and unfortunately, I was not able to retrieve the sets of source from this version. :(
 The sources are dated from 1998-11-20, and the emulator is not working properly. Mainly, the MFP emulation is broken and at this time I can't understand it back.
