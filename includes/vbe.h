@@ -93,11 +93,12 @@ int     offscreenmemoryoffset;
 
 
 int VBE_init() ;
-//int VBE_getmodeinfo(int mode,struct VBEMODEINFO *vbemodeinfo) ;
+int VBE_getmodeinfo(int mode,struct VBEMODEINFO *vbemodeinfo) ;
 int VBE_setmode(int mode) ;
 void VBE_deinit(void) ;
+int VBE_cfg_initmode(int thismode);
 //void *VBE_testmode(int mode) ;
 //
-//void VBE_list_modes() ;
+void VBE_listmodes() ;
 
 

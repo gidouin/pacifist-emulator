@@ -52,9 +52,9 @@ struct DOSMEM lowmemsample ;
 int YM_reg ;
 
 static int AudioDevice = AUDIODEVICE_NONE;
-void *audio_buffer ;
-void *audio_buffer1  ;
-void *audio_buffer2  ;
+char *audio_buffer ;
+char *audio_buffer1  ;
+char *audio_buffer2  ;
 
 
 struct {
@@ -146,13 +146,13 @@ void init_sound(void)
         isMIDI = FALSE ;
 
         ptr = (char *)((lowmemsample.linear_base+65536)&0xffff0000) ;
-        audio_buffer1 = (void *)ptr ;
-        audio_buffer2 = (int)audio_buffer1+samples_to_generate ;
+        audio_buffer1 = ptr ;
+        audio_buffer2 = audio_buffer1 + samples_to_generate ;
         memset(audio_buffer1,0x80,(samples_to_generate*2)+32) ;
         AudioDevice = audiodevice ;
 
         Reset_Sound() ;
-        YM2149Init() ;
+        Ym2149Init() ;
         init_soundcard() ;
 
         if (AudioDevice == AUDIODEVICE_SOUNDBLASTER) {
@@ -191,11 +191,10 @@ extern void periodic_ym() ;
 void common_sound_handler()
 {
         if (ym_monitor) periodic_ym() ;
-        Ym2149RegisterRead(PSGRegs,YmReg13Write) ;
+        Ym2149registerRead(PSGRegs,YmReg13Write) ;
         YmReg13Write = FALSE ;
 
         YmEmulator(audio_buffer2) ;
-        //paula_play((char *)audio_buffer2) ;
 
         volumescale((char *)audio_buffer2) ;
         nbVolumeEntries = 0 ;
@@ -239,10 +238,6 @@ static void uninstall_handler()
 
 void deinit_sound()
 {
-        int i ;
-        //int *p = volume_buffer;
-//        char *p = (char *)audio_buffer2;
-
         if (!isSound) return ;
         if (!AudioDevice) return ;
         freedosmem(&lowmemsample) ;
@@ -257,16 +252,7 @@ void deinit_sound()
                         deinit_gus() ;
                         break ;
         }
-/*
-
-
-        for (i=0;i<313;i++)
-                printf("%8d  ",*p++) ;
-
-*/
 }
-
-static int prevSTmode = FALSE ;
 
 void periodic_sound()
 {
@@ -309,6 +295,7 @@ int scan_env(char *penv, char id, unsigned int *value, int base)
 
 extern int  detect_gus(void) ;
 extern int init_gus(void) ;
+extern void deinit_gus(void) ;
 extern void pause_gus(void) ;
 extern void continue_gus(void) ;
 
@@ -339,7 +326,6 @@ int detect_audiodevice(void)
 int detect_sb()
 {
         char *penv ;
-        int dummy ;
 
         if ((penv = (char *)getenv("BLASTER"))) {
                 if (!(scan_env(penv,'A',&audio.port,16)&&
@@ -752,8 +738,8 @@ int YMbuffer_ptr = 0 ;
 void YMrecord(void)
 {
         int i ;
-        char *ymb = (long *)(YMbuffer+YMbuffer_ptr) ;
-        char *psgb = (long *)PSGRegs ;
+        char *ymb = YMbuffer + YMbuffer_ptr;
+        char *psgb = (char *) PSGRegs;
 
         if (!isYMrecord) return ;
 
@@ -782,7 +768,7 @@ char pcstid[] = "Generated with PaCifiST v0.49" ;
 void save_value(int fil, unsigned int nb, int siz)
 {
         int i ;
-        char *p = &nb ;
+        char *p = (char *) &nb ;
         for (i=0;i<siz;i++)
                 write(fil,(p+siz-i-1),1) ;
 
@@ -1037,9 +1023,12 @@ void midi_out(int v)
 
 int init_midi()
 {
+    return 0;
 }
+
 int deinit_midi()
 {
+    return 0;
 }
 
 

@@ -38,6 +38,8 @@ extern void init_sound(void) ;
 extern void deinit_sound(void) ;
 extern void debug_sound(void) ;
 #endif
+extern void ym_load(char *name) ;
+
 
 extern int nb_images ;
 
@@ -268,32 +270,6 @@ void init_screen_50()
         regs.w.cx = 0x0607 ;
         int386(0x10,&regs,&regs) ;
 }
-
-
-
-// [fold]  (
-static void GoodBye() // display "GoodBye" Screen
-{
-        int loop ;
-        register int x,y ;
-        unsigned short *ptscreen = (unsigned short *)(0xb8000);
-        unsigned short *BiosRowCol = (unsigned short *)(0x450) ;
-        init_screen_50() ;
-
-
-/*
-        loop = 0 ;
-            for (x=0;x<80-loop;x++)
-            {
-               for (y=0;y<25;y++)
-                        ptscreen[y*80+x+loop] = GoodByeScreen[y*80+x] ;
-            }
-
-        *BiosRowCol = 0x0d00 ;
-*/
-}
-
-// [fold]  )
 
 
 /*  skip_spaces:
@@ -1272,7 +1248,7 @@ fin: ;
 
         if (isSound&&isYMrecord)
         {
-                int nbpos,rept ;
+//                int nbpos,rept ;
 //                nbpos=load_ym(ymname,&rept) ;
                 ym_load(ymname) ;
 //                printf("***** %s loaded. Size=%d Rept=%d *****\n",ymname,nbpos,rept) ;
@@ -1335,7 +1311,7 @@ fin: ;
 
         deinit_fileselector() ;
 
-        GoodBye() ;
+        init_screen_50();
 
 #ifdef SOUND
 //        deinit_midi() ;

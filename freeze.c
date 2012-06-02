@@ -137,7 +137,7 @@ int freeze(char *filename,char **msg,char *comments)
         strncpy(hfreeze.text,comments,80) ;
         strncpy(realname8,filename,8) ;
         sprintf(realname,"%s.FRZ",realname8) ;
-        strupr(realname,realname) ;
+        strupr(realname) ;
 
         //fp = fopen("TRYING.FRZ","wb") ;
         fp = fopen(realname,"wb") ;

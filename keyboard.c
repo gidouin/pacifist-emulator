@@ -138,10 +138,9 @@ void ledon(int led) ;
         "       jnz     loo2            "\
         */
 
-static int current_leds = 0x2 ;
-static int prev_leds = 0 ;
-
-static char *bios_leds = (char *)0x417 ;
+//static int current_leds = 0x2 ;
+//static int prev_leds = 0 ;
+// static char *bios_leds = (char *)0x417 ;
 
 void periodic_leds(void)
 {
@@ -245,7 +244,6 @@ int within_keyboard_interrupt = FALSE ;
 
 void keyboard_st()
 {
-        int     a ;
         int keycode ;
         int stkeycode ;
         static int ispause;

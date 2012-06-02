@@ -1,5 +1,8 @@
 #include <i86.h>
 #include <direct.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <conio.h>
 #include "cpu68.h"
 #include "config.h"
 #include "vbe.h"
@@ -101,7 +104,6 @@ void Window_PrintLine(struct TWindow *win,int col,int y,char *text)
 void Redraw_Window(struct TWindow *w)
 {
         int i,j ;
-        int c ;
 
         for (i=w->xpos-1;i<=w->xpos+w->xsize;i++)
           for (j=w->ypos-1;j<=w->ypos+w->ysize;j++)
@@ -301,7 +303,6 @@ void Window_ConfigVideo_RedrawEvent(struct TWindow *win)
 
 void Window_ConfigVideo_KeypressedEvent(struct TWindow *win,int c)
 {
-        int prevp = win->param1 ;
         int destroy = FALSE ;
         switch(c) {
                 case K_UP       : win->param1-- ; break ;

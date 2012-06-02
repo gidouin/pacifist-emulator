@@ -32,6 +32,7 @@
 *****************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "ym2149.h"					// Emulation YM2149
 
@@ -52,9 +53,8 @@ static	SD	sampleToCompute = 22050/50 ;
 
 //static	SD	sampleToCompute = 22222/50 ;
 
-static	int	innerSamplePos = 0;
-static	UB	*innerOutDataPtr;
-static	int	ymVersion;
+//static	int	innerSamplePos = 0;
+//static	UB	*innerOutDataPtr;
 
 
 // YM-Emulation Add parameters.
@@ -287,11 +287,6 @@ void	CalcVoice(int nvoice,int *dest)
 
 	n=sampleToCompute;
 
-        if ((code== _110) & (steptune==0))
-        {
-                code== _1000 ;
-        }
-
 	switch (code)
 	{
                 extern int isSamples ;
@@ -470,7 +465,6 @@ void	EnvInit(void)
 void	TuneInit(void)
  {
  int	i;	// Mettre volatile: bug du compilo 10.5 en /onatexl+
- float	a;
 
 
 	//-------------------------------------------------

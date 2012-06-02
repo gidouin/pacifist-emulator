@@ -266,7 +266,9 @@ int register_image_to_bios(char *name, int drv)
         return TRUE ;
 }
 
+#ifdef DEBUG
 static char buf[1024] ;      // string for temporary debugging info
+#endif
 static char *sectorbuffer ;
 extern struct DOSMEM lowmembuffer ;
 
@@ -281,7 +283,7 @@ static int Image_ReadSector(int dev, int first, int nb, MPTR buffer)
         if (drives[dev].empty) return -2 ;
         disk_activity(TRUE) ;
         lseek(drives[dev].handle,(first<<9) + drives[dev].skiplen ,SEEK_SET) ; //DIM
-        read(drives[dev].handle,buffer,nb<<9) ;
+        read(drives[dev].handle, (char *) buffer,nb<<9) ;
         disk_activity(FALSE) ;
 
         if ((first==0)&&!bootexec) {
@@ -298,7 +300,7 @@ static int Image_WriteSector(int dev, int first, int nb, MPTR buffer)
         if (drives[dev].write_protected) return -13 ;
         disk_activity(TRUE) ;
         lseek(drives[dev].handle,(first<<9) + drives[dev].skiplen ,SEEK_SET) ; //DIM
-        write(drives[dev].handle,buffer,nb<<9) ;
+        write(drives[dev].handle, (char *) buffer,nb<<9) ;
         disk_activity(FALSE) ;
         return 0 ; // no error
 }
@@ -700,7 +702,7 @@ void SystemDiskRW()
                 return ;
         }
 
-        memset(memory_ram+buffer,count*512) ;
+        memset(memory_ram+buffer,count*512, 0) ;
 
         if (drives[dev].kind <= DRIVE_DIR) { // != DRIVE_IMAGE
                 processor->D[0] = -15 ; // unknown peripheral
@@ -1364,8 +1366,8 @@ char keyboard_buffer[KBDMAXBUF] = {0xa2};
 
 void ack_6301()
 {
-        int x ;
 /*
+        int x ;
         if ((read_st_byte(0xfffa09) & 0x40) == 0) {
                 processor->events_mask &= ~MASK_ACIA ;
                 return ;
@@ -1406,9 +1408,9 @@ int Keyboard_Read(void)
                 mfp.gpip  |= 0x10 ;
         }
         else {
-                int v;
                 memio[0x7c00] = 0x81 ;
 /*
+ int v;
                 if ((read_st_byte(0xfffa09) & 0x40) == 0) {
                         processor->events_mask &= ~MASK_ACIA ;
                         return x ;
@@ -1697,6 +1699,7 @@ union REGS regs ;
 
 void SystemXbios_Rsconf(void)
 {
+#ifdef DEBUG
         MPTR stack =  processor->A[7] ;
         UWORD baud =  read_st_word(stack+2) ;
         UWORD ctrl =  read_st_word(stack+4) ;
@@ -1705,7 +1708,6 @@ void SystemXbios_Rsconf(void)
         UWORD tsr  =  read_st_word(stack+10) ;
         UWORD scr  =  read_st_word(stack+12) ;
 
-#ifdef DEBUG
         char b[300] ;
         sprintf(b,"***** XBIOS function #15 : RSCONF.\n\t" \
                   "baud=%x ctrl=%x ucr=%x rsr=%x tsr=%x scr=%x\n",
@@ -2033,6 +2035,7 @@ static int        Periodic_Command = PERIODIC_BUSY ;
 void Periodic_FDC()
 {
         return ;
+/*    
         switch (Periodic_Command) {
 
                 case 0 :                   rasters_till_periodic_FDC = 0 ;
@@ -2045,6 +2048,7 @@ void Periodic_FDC()
                 case PERIODIC_BUSY :       FDC_Status &= ~(FDC_Status_Busy|FDC_Status_MotorOn) ;
                                            break ;
         }
+*/
 }
 
 
@@ -2543,7 +2547,7 @@ FILE *fpar ;
 
 void SystemPrtStatus()
 {
-        union REGS regs ;
+//        union REGS regs ;
         if (!isParallel) {
                 processor->D[0] = 0 ;
                 return ;
@@ -2568,7 +2572,7 @@ void SystemPrtStatus()
 
 void SystemPrtOut()
 {
-        union REGS regs ;
+//        union REGS regs ;
         if (!isParallel) {
                 processor->D[0] = 0 ;
                 return ;
