@@ -1210,7 +1210,7 @@ static void do_loadbinary()
         if (Read_Number(&size,FALSE))
                 size = 0xffffff ;
 
-        nbread = fread(address,1,size,fp) ;
+        nbread = fread((void *) address,1,size,fp) ;
         fclose(fp) ;
         sprintf(filename,"%d bytes read (%06x-%06x)",nbread,addressst,addressst+nbread-1) ;
         print_string(7,filename) ;
@@ -1259,7 +1259,7 @@ static void do_savebinary()
                 return ;
         }
 
-        nbsaved = fwrite(address,1,size,fp) ;
+        nbsaved = fwrite((void *) address,1,size,fp) ;
         fclose(fp) ;
         sprintf(filename,"%d bytes saved (%06x-%06x).",nbsaved,addressst,addressst+size) ;
         print_string(7,filename) ;
