@@ -1,0 +1,426 @@
+     05 april 96 - Starting seriously the 68000 emulation
+     10 april 96 - Almost all instructions are implemented. Emulation is
+		   Horribly *slow*. Debugging starts...
+     18 april 96 - Run TOS 1.0... but stay in infinite loop somewhere
+
+v0.1 (at least something: run some 68000 code)
+
+     24 april 96 - Add a patch to allow using a disk image. Still hangs
+		   after booting.
+     26 april 96 - Timer C added. emulation speeded with some macros and
+		   registers use. Corrected a bug in stacks swapping when
+		   changing from user to supervisor mode.
+     29 april 96 - Monitor improved: Breakaccess, register/memory set,
+		   VERY primitive cycles count.
+     02 june  96 - Corrected a bug in shifts instructions: LSL #0,Dx is
+		   LSL #8,Dx. The ST screen can now be displayed at any
+		   time under the monitor. Now boot till the desktop, but
+		   WITHOUT using "desktop.inf". Why???
+     04 june  96 - Added a log file for catching TRAPs and stuffs. Conditional
+		   compilation:Can now compile without debugging, so memory
+		   access is faster and executable smaller.
+     05 june 96  - When running, the ST screen is displayed (Mode 0 only).
+
+v0.2 (st screen appears sometimes)
+
+     12 june 96  - .INI file added. "desktop.inf" is used for SOME disks
+		   images. remains a mystery. Windows and icons are not well
+		   drawn. Still some bugs in 68000 emulation. Certainly for
+		   SR flags.
+     15 june 96  - first "public" presentation at Microtel HQ's.
+     16 june 96  - ST to PC Screen conversion rewritten in ASM. light speeded.
+		   More INI entries. Mouse driver started. ACIA irq added,
+		   OPL is ajusted for each interrupts (VBL, ACIA, Timer C).
+		   Priorities.
+     18 june 96  - Mouse is OK. PC mouse movements are converted in ST
+		   6301 microcontroller codes. Slow solution because for each
+		   little displacement, an ACIA irq is generated (but at last
+		   that works). Desktop menu trashes the screen when pulled
+		   down. mouse buttons ignored(?).
+     20 june 96 -  fixed many bugs in disassembly module.
+		   fixed some bugs in 68000 emulation: CMPA modified X flag
+		   and EOR.x Dx,Dy was performing EOR.x Dy,Dx...
+		   Now windows & icons are OK.
+		   More precise cycles count.
+		   Added a switchable PROFILE capability.
+     22 june 96 -  optimized and acurate cycles counted MOVEM (almost twice
+		   faster now).
+     23 june 96 -  timer rewritten in C
+		   added a "break on opcode" function in monitor
+		   fixed a bug in DIVS
+		   fixed a bug with use of strcpy()
+     25 june 96 -  all ASM files converted to IDEAL mode. TASM a bit faster.
+		   MOVEM.L <regs>,-(Ax) is very fast now (when in RAM)
+     30 june 96 -  corrected a bug in image disk reading. Xbios now patched
+		   now for direct disk access. works fine now.
+		   support for direct reading of an ST disk in a PC drive.
+		   simple and double density disks are OK. programs can be
+		   run! editor in Devpac is trashy.
+      2 july 96    Start optimizing MOVEs instructions.
+      3 july 96    improved screen conversion. redraw only modified areas.
+		   starting to write a low-level keyboard routine.
+		   -> speed gain in 3 day is about 60%
+
+v0.22 (system is a little useable)
+
+      6 july 96    the 3 standard shifter modes supported.
+      7 july 96    started mounting a PC drive on ST drive C.
+     12 july 96    many gemdos functions work well with mounted drives now.
+		   corrected a bug in CHK mem,Dx : GEMbench runs now but
+		   the results are completly buggy...
+     14 july 96    now disks (images & mounts) can be written on.
+     19 july 96    optimizing some general routines in speed & size (SR
+		   conversion). Fixed colors in low rez.
+     28 july 96    modified movem.w from mem. Now COLONIAL CONQUEST runs!!
+		   but stay in infinite loop when creating a new game...
+    8 august 96    added TAS instruction (needed in TOS 1.62)
+		   this TOS still bug later on... is a blitter needed?
+   10 august 96    "trap" function in monitor can filter exceptions.
+		    add INI directive trapirq.
+
+v0.23 (a VERY few programs are OK)
+
+   11 august 96    NEW: pmode exceptions handler to prevent (some) crashes.
+		   display VERY LAST 68000 PC & last accessed location.
+   12-28 august 96 hardware registers accesses completly rewritten, a bit
+		   slower but easily maintainable. a huge work
+   19 september 96 Bus error generated on invalid hardware registers memory.
+		   SHIFTing keys OK. Source code is now 22000+ lines long
+		   (mixed C & ASM), i.e. about 600Kb.
+   28 september 96 added ABCD instruction (for STUNT CAR RACER to...start).
+		   modified bytes push on stack.
+   30 september 96 added SBCD (needed by IK+ to start (it crashes anyway...))
+      1 october 96 fixed a bug in DIVU/DIVS. KRAM ok.
+
+v0.24 (starting to make pacifist more reliable)
+
+    17 november 96 binary load function under monitor
+		   fsfirst/fsnext fixed for time/date/size
+		   added "fastvideo" directive in INI file
+		   an analogic joystick support in auto mode
+    18 november 96 rewritten interrupt processing
+		   started to implement output to parallel port
+		   started to emulate the YM sound chip
+    19 november 96 added autoconf of soundblaster via environment variable
+
+v0.25 (still very buggy sound, buggy parallel, buggy joystick)
+
+    28 november 96 added global & local relative speeds calculation
+    29 november 96 timer more acurate, sound...sounds better
+    30 november 96 added gemdos fdatime(), dfree(), frename() emulation.
+		   BIG WORK: You should soon be able to mount be any PC
+		   ========= directory as an Atari drive. Disabled
+			     because all GEMDOS functions aren't yet
+			     supported. All filenames are translated,
+			     so it is (a little) slower.
+			     Wait v0.3 for this kind feature!
+    2 december 96  started to support TIMER B in events count mode (HBL)
+		   ST reset function added.
+   15 december 96  added hard reset function for programs that handle
+		   reset. Sound almost great now.
+		   added specific move.b (a7)+,... AN COOL player OK
+		   movem.w now with sign extended, GENST starts.
+   19 december 96  now PC hi-order byte is no more cleared. It is necessary
+		   for bombs display as TOS keeps the exception number
+		   in this byte.
+   20 december 96  mirroring AY ports for tricky playroutines (using movem...)
+		   to work. now V Flag is 100% correct with DIVU/DIVS.
+		   added a step over function in monitor.
+		   ARRRG!! stzip was using move.b d(Ax,Ry),-(a7)! Ok now.
+		   more keyboard commands added: absolute mouse,...
+
+v0.3 (this version is stable)
+
+   20 december 96  now PaCifiST is supplied with an external program to help
+		   you building disk images.
+   21 december 96  added events count mode TIMER A, not very acurate but
+		   suficient in many case (max freq is an IRQ per rasterline).
+		   started to support sample playing (must buferize all YM
+		   accesses!)... I want to play INTERPHASE!
+   26 december 96  started experimental BIOS-level serial emulation.
+		   fixed a bug in dta with gemdos search functions.
+		   IMGBUILD can now create blank image disk (DD or even
+		   multi-megabytes ones)
+   27 december 96  output to parallel port (low-level & BIOS) is now OK.
+		   printer (LPT1, port 379h) detection works as well.
+   30 december 96  added (fake) STOP 68000 instruction.
+		   started some kind of FDC emulation. Just some Commands
+		   (Restore, Seek, Step in/out & ReadSector) supported.
+   31 december 96  added FDC drive/side selection, Added FDC Step command.
+     1 january 97  added (non definitive) TRACE mode support
+		   added disk format calculation in case of invalid boot
+		   sector informations.
+		   enhanced FDC emulation: multiple sector bit used,
+		   FDC IRQ triggering added (with delay relying on DMA).
+     3 january 97  FDC status register more acurate (Resolution 101 starts)
+		   also two drives supported with FDC emulation now.
+		   binary save command added to monitor.
+		   added (temp.) disk image change function in monitor.
+		   added adress error (on clr.w) exception with correct
+		   stack frame for elektra demo to start.
+
+v0.31 (disk-support low-level FDC access is supported (RO).)
+
+     5 january 97  completly rewritten screen generation routines. Now each
+		   line is processed, instead of the whole screen. A linear
+		   320x200x256 videomode is needed for the moment (use UNIVBE).
+     8 january 97  256 colors line-oriented screen rendering almost OK.
+		   32K & 64K colors mode work as well (a bug remains but
+		   should not be difficult to eradicate), more reliable
+		   but MUCH slower.
+    12 january 97  [made annoncement web page.]
+    13 january 97  screen/line-oriented method now switchable. Added a
+		   gfx mode selection box.
+    14 january 97  coded in a hurry a (absolutely bad) file selector for
+		   image disk-switching (still buggy but it isn't very
+		   useful)
+    15 january 97  bus error generated on wrong PC.
+		   found a bug in 68000 emulator (or.l mem,Dx)
+		   added gemdos (not very good) fgetpath() support.
+    17 january 97  bus error triggered when trying to access wrong memory
+		   address and... AT LEAST!!! I found why TOS1.62 didn't
+		   go to the desktop:
+		   I assumed that, like TOS1.0 it was only 192Kb! STUPID! ^_^;
+    22 january 97  rewritten all screen rendering with a very cool method
+		   (fast+small) written by Patrice Lindivat.
+ 24-26 january 97  intensive debugging and source remodelling.
+		   more working programs: Little Colored Demo (by tEX)
+    27 january 97  checked A7 (more Bus error triggered).
+		   Disk switching more convenient, but hangs often!
+    30 january 97  no more home-made bimodal mouse handler, now rely on
+		   a driver. PaCifiST (non VBE) Works under Windows 95 now.
+    1 february 97  handle double bus error -> avoid crashes.
+
+    4 february 97  compiled first public version (with DEBUG directive ON
+		   so everybody can trace 68000 programs)
+
+v0.315 (first public release)
+
+    5 february 97  Added new switch to IMGBUILD to allow reading side 2
+		   of disk instead of side 1.
+		   Fixed a bug in "animate".
+		   68000 Trace now stronger and traceable... Under monitor!
+  6-7 february 97  more MFP stuffs: fixed Timer B, Added Timer D (needed by
+		   Super Sprint to start - still unplayable...).
+    9 february 97  fixed a bug in CMPM.
+   10 february 97  added commandline options to override INI (try /help).
+   11 february 97  tested many programs. Buckets of games just don't work. :(
+		   Minor corrections to FDC emulation, thanks to informations
+		   from Alan Reeve.
+   13 february 97  more tests. Fixed TAS Dx.
+
+v0.32 - READY on 14 February 97
+
+   17 february 97  Important bug fixed: Flag N after MOVE.W <reg>,<mem>
+
+v0.32a - READY on 17 February 97
+
+   18 february 97  added commandline switches /refreshrate & /mono.
+		   FDC command now triggered with .L access (WOW!)
+		   Most antivirus boots will not detect something special.
+    19-20 feb  97  STOP instruction should now have a normal behaviour.
+		   Improvement in monitor & disassembling modules.
+		   direct FDC loading faster.
+
+v0.33 - SEEMS OK, Ready on 21 February 97
+
+    21-22 feb  97  Many monitor improvements.
+		   YM emulation (very trashy!!!!!!!) with Soundblaster
+		   (STonX routine) in beta version.
+v0.34beta
+
+    25-26 feb 97   Ulrich Doewich YM emulation ported to 32 bits, rewritten
+		   sound IRQ. Tested with SB.
+		   If no PC Joystick is found, Arrows & CTRL are used to
+		   simulate a Joystick in Port 1.
+		   IOPL after an exception now ok.
+    27 feb 97      Coded a short 6301 Disassembler to study the Atari Keyboard
+		   ROM. It allows me to understand more how it works.
+		   Written a more compatible 6301 emulation. Added a monitor
+		   command to put values in keyboard buffer.
+		   Gained a few kilobytes in EXE.
+
+v0.34 - OK on 28 Fev 97 - Still no sound, 90% joystick & mouse emulation
+
+    1 march 97     System date & time is kept within emulation, but due
+		   to the timings used, it should be somewhat bogus.
+		   Autorun directive added.
+    3 march 97     Some keyboard stuffs added: reset, help & undo keys.
+    4 march 97     Fixed ILLEGAL instruction.
+		   YM emulation from Arnaud Carre merged into emulator. More
+		   maintainable than Ulrich routine. Not definitive.
+
+v0.35 - OK on 5 March 97 - Sound with some SB compatible cards
+
+
+    5 march 97     Add Native PC speed support. Ok for gemdos apps.
+		   In order to allow the definition of RAM amount at startup,
+		   I had to rewrite all memory accesses in 68000 emulation
+		   core. Hard & boring to do... But the speed will be
+		   boosted.
+    6 march 97     add ramsize directive.
+		   NBCD utterly wrong.
+		   STOP #$2100 ok with $68 irq.
+		   fixed monochrome colors in a *stupid* (but working) way.
+		   no more FPU found by some programs
+  6-7 march 97     Some FDC parts rewritten. Some more programs load.
+
+v0.4 beta 1
+
+ 9-10 march 97     started to rewrite EA calculation
+   12 march 97     written a quick patch to fix the mouse bug in v0.35.
+		   fixed a bug when reaching ramsize-2 on a dword.
+		   SB driver rewritten with advices from Ulrich & Arnaud.
+		   Disk changes reported to system.
+   13 march 97     Written a more convenient fileselector for disk switching.
+		   Use F12 for this screen in monitor OR during emulation.
+		   fixed dma transfer length (was a byte too high).
+   14-16 march 97  crash handled with DPMI function 203.
+		   EA calculation a (little) bit faster. Use only EAX & EDI
+		   In "no debug" version, speed gain from v0.35 is about 30%!
+v0.4 beta 2
+
+   17 march 97     Mousebuttons in absolute mouse mode now work if they are
+		   mapped on keys.
+		   rewritten HBL handling. More acurate rasters.
+   18 march 97     Add ZIP archives support in diskselector. Quickly done,
+		   but seems to be ok. PKUNZIP must be in the PATH.
+   19 march 97     AT LEAST!!! Mousebuttons function in absolute mouse mode.
+		   directive for sound disabling.
+   20 march 97     Global volume selection. Serial disabling option.
+  21-22 march 97   Tests - Documentation for the emulator: So booOOOooring
+		   to write!!! I *HATE* writing docs.
+
+v0.4 public release
+v0.4a              SHIFTED keys fixed - STABLE VERSION
+
+   24 march 97     Fixed ANOTHER Trace mode bug. Monochrome mode centered.
+   25-26 march 97  Some MFP routines rewritten
+   27 march 97     68000 Prefetch Emulated (Switchable, because it takes
+		   time - default is OFF). Stack frame now handles invalid
+		   address value on bus/address error (necessary for the BIG
+		   DEMO which trigger address errors to decode itself. Anyway,
+		   without a patch in a Timer B irq, the demo is too slooooow)
+   28 march 97     code remodeling, in order to minimize cache defaults.
+		   68000 emulation is 30Kb shorter than in v0.4.
+   29 march 97     tests for STF samples support.
+  1st april 97     build-in MSA support (read only), compressed or not.
+    2 april 97     BCD instructions more acurate. STF samples almost done.
+		   ScrollLock LED indicates disk activity (thanks Ulrich!)
+		   Corrected documentation with help from Carolyn.
+		   Monitor/Disk Selection screen now are INSTANT pop-up.
+    3 april 97     fixed a bug in Dfree(). Directive to bypass joy detection.
+		   New keyboard layout (not perfect still). Volume fixed.
+		   Reset now is CTRL-Break.
+    4 april 97     Changed SB detection routine.
+    5 april 97     Switches for Line-mode & MaxSpeed-mode.
+		   Tried to support fake one-sided disk.
+
+v0.41 public release
+
+    7 april 97     Fixed Xbios() read/write sectors.
+    8 april 97     Protected mode interface no more needed (ok with S3VBE).
+		   External mouse sensitivity tunable. Mouse mode 0xa now
+		   supported (Joust sequence in Defender of the Crown).
+ 10-11 april 97    Reset from Disk selection screen. Direct PC drive
+		   support (not recommended!!!)
+
+v0.42 public release
+
+   14 april 97     prefetch emulation now working for DBF as well. VERY SLOW.
+   15 april 97     a few monitor bugs fixed, New BPB function, screen building
+		   changes. Patch command to fix Carrier Command mouse: Not
+                   a good solution, I know.
+   16 april 97     fixed folder creation bug. Debug mode faster.
+ 17-... april 97   Low-level FDC emulation being changed, as well as
+                   video emulation.
+
+  0.43 beta release
+
+   21 april 97     fixed bug when TEMP=X:\, SENSIBILITY directive now is
+                   SENSITIVITY. fileselector now remember the last dir
+   24 april 97     some minor bugfixes.
+
+  0.43 release
+                   bugfixes in gemdos emulation: Dgetpath, Fdatime,...
+                   switches to change keyboard/mouse/joystick behaviour
+                   (limited) standard VGA line mode
+                   PCX screen snapshots shortcut
+                   new joystick calibration
+                   new MIXED video mode allowing resolution switch
+
+   29 april 97
+
+   0.44 public released
+
+                   GUS support
+                   Joystick emulation is now arrows (when NumLock is off)
+                   new CUSTOM video mode of 640x480x16 under desktop
+                   New INI directives (RENDER/TOS...)
+                   PCX dump now ok in 32K & 64K Line mode
+                   Bug fix: snapshots on reset, question mark key
+                   Able to record .YM file, to be used under STSOUND
+                   Fake formating: You can now save under many games:
+                   Carrier Command, Deuteros...
+                   TOS switchable under emulator.
+
+
+   19 june 97 0.45 public release
+
+                   STE Blitter emulation
+                   Shortcuts for filenames in disk selector
+                   GUS driver fixed with 16-bit DMA channels
+                   RAR archives browseable in disk selector
+                   recorded musics are now YM5! format, replay under monitor
+                   option to emulate only 512K ST RAM
+                   bugfixes: Opened MSA files limitation, ASL.L Dx,Dy
+                             with V flag, compiled Omikron programs ok.
+
+
+   17 july 97 0.46 public release
+
+                Better MFP 68901 emulation
+                Both ST joysticks emulation (PC Joy and Numeric Pad)
+                INI directives:
+                        ramsize (now 0.5,1.5,2.5,... allowed)
+                        laptop,image,ste
+                partial STE shifter emulation
+                Bugfixes: lowcase filename in archives, IOPL, STOP
+                          instruction, ff8209 emulation, synchro,
+                          Xbios read sector fixed (Decade Demo ok)
+                low border overscan
+                ability to skip bootsectors
+                French documentation added
+
+   11 October 97 0.47 final public release
+
+                Monitor improvements:
+                  - breakaccess optionaly active on either read or write
+                  - build-in evaluator for all commands
+                  - new commands: bar,baw,e,uz,fz
+                  - Hotkey for MONO/COLOR selection
+                Bugfixes:
+                  - No more crash when video pointer is out of RAM
+                  - fixed a bug in pcdrive support
+                  - DTA pointer ok when PEXECing on mounted drives
+                Primitive MIDI OUT emulation (with SB midi port)
+                INI directive to choose default VBE2.0 mode when in LINE mode
+                Faster 68000 emulation (better CCR handling)
+                STE shifter emulation
+                Freezing/Unfreezing the emulated Atari ST state
+
+   25 January 97 0.48 public release
+
+	Fixed several bugs in ACIA emulation
+        Timer B fixed back
+	Fixed problem with 4x joysticks interface detection
+	File selector allow disk images creation
+	Blitter emulation speeded up
+        Support for raw 'DIM' disk image format
+        PCX saving now works in medium resolution
+	Monitor improvements:
+                - Previous commands stack
+		- Command to search in memory
+                - Improved expression evaluator
+
+
