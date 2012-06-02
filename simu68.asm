@@ -207,12 +207,6 @@ PROC Init_68000 NEAR
         cmp     eax,1000h
         jne short    @@linex
 
-        test    [is68030],1
-        jz      @@plain68000
-
-        call    init_68030
-
-@@plain68000:
         mov     eax,[Cycles_Per_RasterLine]
         ;mov     [ebp+base.CyclesLeft],eax
         mov     [thisraster_cycles],0
@@ -1716,24 +1710,10 @@ LABEL PacifistLogo WORD
 
         PUBLIC base_processor
 
-
-Base_processor  base
-
-
-
-
 ;
-;_D             dd      8 dup (0)
-;_A             dd      8 dup (0)
-;_A7            dd      0
-;CyclesLeft     dd      0
-;_NZC            dd      0
-;_V              dd      0
-;_X              dd      0
-;_SR            dd      0
-;_PC            dd      0
-
-
+; structure defined and simu68.inc, corresponding to tprocessor C struct (cf cpu68.h)
+;
+Base_processor  base    ?
 
 HiByte_PC       dd      0
 Illegal_PC      dd      0
