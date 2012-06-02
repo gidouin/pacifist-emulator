@@ -264,9 +264,7 @@ static void disa_Type_None(UWORD Instr, MPTR *pc)
 ÀÄÄÄÄÁÄÄÄÁÄÁÄÄÄÄÁÄÄÄÁÄÄÄÙ  Ry : source register
 */
 
-static void disa_Type_ABCD(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_ABCD(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         if ((Instr&8)==8) {     // type -(Ay),-(Ax)
@@ -291,9 +289,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_ADD(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_ADD(UWORD Instr, MPTR *pc)
 {
         //int fakesize = Instr;
         int datasrc = (Instr>>8)&1 ;
@@ -334,9 +330,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_ADDA(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_ADDA(UWORD Instr, MPTR *pc)
 {
         cat_size_wl((Instr>>8)&1) ;
         *DesaPtr++='\t' ;
@@ -368,6 +362,7 @@ MPTR *pc ;
                 case 0 : cat_hexa_byte(read_st_byte(1+*pc)) ; *pc += 2 ; break ;
                 case 1 : cat_hexa_word(read_st_word(*pc)) ; *pc += 2 ; break ;
                 case 2 : cat_hexa_long(read_st_long(*pc)) ; *pc += 4 ; break ;
+                default:
                         *DesaPtr++ = '?' ;
         }
         *DesaPtr++ = ',' ;
@@ -385,9 +380,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_ADDQ(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_ADDQ(UWORD Instr, MPTR *pc)
 {
         int value = (Instr>>9)&7 ;
         if (value==0) value = 8 ;
@@ -412,9 +405,7 @@ MPTR *pc ;
         Sizes:  00      01      10
 
 */
-static void disa_Type_ADDX(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_ADDX(UWORD Instr, MPTR *pc)
 {
         cat_size((Instr>>6)&3) ;
         disa_Type_ABCD(Instr,pc) ;
@@ -432,9 +423,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_AND(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_AND(UWORD Instr, MPTR *pc)
 {
         disa_Type_ADD(Instr,pc) ;       // Identique sauf pour AND Ax,..
 }
@@ -444,9 +433,7 @@ MPTR *pc ;
                 ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
         (ANDI to CCR)
 */
-static void disa_Type_i2CCR(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_i2CCR(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         *DesaPtr++ = '#' ;
@@ -464,9 +451,7 @@ MPTR *pc ;
         (ANDI to SR, EORI to SR)
 */
 
-static void disa_Type_i2SR(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_i2SR(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         *DesaPtr++ = '#' ;
@@ -489,9 +474,7 @@ MPTR *pc ;
                                                                                                                                                                         1 = Dx  shifts
 */
 
-static void disa_Type_ASL_Dx(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_ASL_Dx(UWORD Instr, MPTR *pc)
 {
         int reg = ((Instr>>9)&7) ;
         cat_size((Instr>>6)&3) ;
@@ -516,9 +499,7 @@ MPTR *pc ;
                 \___ E.A. __/
 */
 
-static void disa_Type_ASL_EA(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_ASL_EA(UWORD Instr, MPTR *pc)
 {
         cat_size(1)     ; // always on word
         *DesaPtr++='\t' ;
@@ -538,9 +519,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_BRA(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_BRA(UWORD Instr, MPTR *pc)
 {
         MPTR pc2 = *pc;
         signed int offset ;
@@ -569,9 +548,7 @@ MPTR *pc ;
               \___ E.A. __/
 */
 
-static void disa_Type_BCHG_Dx(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_BCHG_Dx(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_Dreg((Instr>>9)&7) ;
@@ -592,9 +569,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_BCHG_n(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_BCHG_n(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         *DesaPtr++ = '#' ;
@@ -615,9 +590,7 @@ MPTR *pc ;
                    \___ E.A. __/
 */
 
-static void disa_Type_CHK(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_CHK(UWORD Instr, MPTR *pc)
 {
         int fakesize = (Instr&0x3f);
         *DesaPtr++='\t' ;
@@ -636,9 +609,7 @@ MPTR *pc ;
                \___ E.A. __/
 */
 
-static void disa_Type_CLR(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_CLR(UWORD Instr, MPTR *pc)
 {
         cat_size((Instr>>6)&3) ;
         *DesaPtr++='\t' ;
@@ -657,17 +628,9 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_CMP(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_CMP(UWORD Instr, MPTR *pc)
 {
-//        disa_Type_ADD(Instr,pc) ; // Identique mais destination TOUJOURS Dx
-
-        int fakesize = Instr;
         cat_size((Instr>>6)&3) ;
-//        if (!(Instr&0x40)) fakesize=0x100 ;
-//        Instr = (Instr&0xfeff)|fakesize ;
-
         *DesaPtr++='\t' ;
 
         cat_ea(Instr,pc) ;
@@ -686,9 +649,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_CMPM(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_CMPM(UWORD Instr, MPTR *pc)
 {
         cat_size((Instr>>6)&3) ;
         *DesaPtr++='\t' ;
@@ -710,9 +671,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_DBF(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_DBF(UWORD Instr, MPTR *pc)
 {
         signed int offset = (signed int)(signed short)read_st_word(*pc) ;
         *DesaPtr++= '\t' ;
@@ -734,9 +693,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_EOR(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_EOR(UWORD Instr, MPTR *pc)
 {
         disa_Type_AND(Instr,pc) ;       // identique mais TOUJOURS <AE> destination
 }
@@ -755,9 +712,7 @@ MPTR *pc ;
                 10001 -> data & address registers
 */
 
-static void disa_Type_EXG(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_EXG(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         switch((Instr>>3)&0x1f) {       // type des registres
@@ -773,7 +728,8 @@ MPTR *pc ;
                                 *DesaPtr++ = ',' ;
                                 cat_Areg(Instr&7) ;
                                 break ;
-                *DesaPtr++ = '?' ;
+                default:
+                                *DesaPtr++ = '?' ;
         }
 }
 
@@ -788,9 +744,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_EXT(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_EXT(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++ = '.' ;
         if (Instr&0x40) *DesaPtr++='L' ; else *DesaPtr++='W' ;
@@ -810,9 +764,7 @@ MPTR *pc ;
               \___ E.A. __/
 */
 
-static void disa_Type_JMP(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_JMP(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_ea(Instr,pc) ;
@@ -830,9 +782,7 @@ MPTR *pc ;
         An          \___ E.A. __/
 */
 
-static void disa_Type_LEA(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_LEA(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_ea(Instr,pc) ;
@@ -854,9 +804,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_LINK(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_LINK(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_Areg(Instr&7) ;
@@ -878,9 +826,7 @@ MPTR *pc ;
             \__ E.A.__/  \__ E.A. __/
 */
 
-static void disa_Type_MOVE(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_MOVE(UWORD Instr, MPTR *pc)
 {
         int mode, reg ;
         int fakeinstr ;
@@ -927,9 +873,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_2CCR(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_2CCR(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_ea(Instr,pc) ;
@@ -950,9 +894,7 @@ MPTR *pc ;
                         \___ E.A. __/
 */
 
-static void disa_Type_MOVEA(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_MOVEA(UWORD Instr, MPTR *pc)
 {
         int fakesize = (Instr&0x3f);   // fake instruction to work with <ea>
 
@@ -977,9 +919,7 @@ MPTR *pc ;
                                                                                 An
 */
 
-static void disa_Type_2USP(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_2USP(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_Areg(Instr&7) ;
@@ -1001,9 +941,7 @@ MPTR *pc ;
                                                                                 An
 */
 
-static void disa_Type_USP2(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_USP2(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         *DesaPtr++ = 'U' ;
@@ -1024,9 +962,7 @@ MPTR *pc ;
               \___ E.A. __/
 */
 
-static void disa_Type_SR2(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_SR2(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         *DesaPtr++ = 'S' ;
@@ -1046,9 +982,7 @@ MPTR *pc ;
               \___ E.A. __/
 */
 
-static void disa_Type_2SR(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_2SR(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_ea(Instr,pc) ;
@@ -1070,9 +1004,7 @@ MPTR *pc ;
                   \___ E.A.___/
 */
 
-static void disa_Type_MOVEM2mem(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_MOVEM2mem(UWORD Instr, MPTR *pc)
 {
         int regmask = read_st_word(*pc) ;
         *pc += 2 ;
@@ -1101,9 +1033,7 @@ MPTR *pc ;
                   \___ E.A.___/
 */
 
-static void disa_Type_MOVEMmem2(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_MOVEMmem2(UWORD Instr, MPTR *pc)
 {
         int regmask = read_st_word(*pc) ;
         *pc += 2 ;
@@ -1132,9 +1062,7 @@ FEDC BA9 87   6  543 210
 
 */
 
-static void disa_Type_MOVEP_2Dx(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_MOVEP_2Dx(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++ = '.' ;
         if ((Instr&0x40))
@@ -1158,9 +1086,7 @@ MPTR *pc ;
 ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 */
-static void disa_Type_MOVEP_Dx2(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_MOVEP_Dx2(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++ = '.' ;
         if ((Instr&0x40))
@@ -1184,9 +1110,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_MOVEQ(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_MOVEQ(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         *DesaPtr++ = '#' ;
@@ -1208,9 +1132,7 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_NBCD(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_NBCD(UWORD Instr, MPTR *pc)
 {
         disa_Type_JMP(Instr,pc) ;// identique sauf pour certains modes d'adr.
 }
@@ -1246,9 +1168,7 @@ static void disa_Type_STOP(UWORD Instr, MPTR *pc)
 ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÙ
 */
 
-static void disa_Type_SWAP(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_SWAP(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_ea(Instr&7,pc) ;
@@ -1266,9 +1186,7 @@ FEDC BA98 7654  3210
 
 */
 
-static void disa_Type_TRAP(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_TRAP(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         *DesaPtr++ = '#' ;
@@ -1289,25 +1207,19 @@ MPTR *pc ;
 
 */
 
-static void disa_Type_UNLK(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_UNLK(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_Areg(Instr&7) ;
 }
 
-static void disa_Type_DATA(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_DATA(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_hexa_word(Instr) ;
 }
 
-static void disa_Type_PATCH(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_PATCH(UWORD Instr, MPTR *pc)
 {
         *DesaPtr++='\t' ;
         cat_hexa_word(read_st_word(*pc)) ;
@@ -1338,9 +1250,7 @@ static void cat_Rc(int RC)
         DesaPtr+=4 ;
 }
 
-static void disa_Type_MOVEC(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_MOVEC(UWORD Instr, MPTR *pc)
 {
         int param ;
         char r ;
@@ -1367,9 +1277,7 @@ MPTR *pc ;
 
 }
 
-static void disa_Type_FPU(Instr,pc)
-UWORD Instr ;
-MPTR *pc ;
+static void disa_Type_FPU(UWORD Instr, MPTR *pc)
 {
         *pc+=2 ;
         *DesaPtr++ = '\t' ;
