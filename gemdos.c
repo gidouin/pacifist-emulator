@@ -39,7 +39,6 @@
 int IsTrappedGemdos ;
 int IsTrappedPexec ;
 
-static char buf[512] ;
 static int func ;
 MPTR dta ;
 static union  REGS regs ;
@@ -148,10 +147,8 @@ int register_drive_to_gemdos(char *path)
 // [fold]  (
 void mountedname_to_pcname(char *mountedname, char *pcname)
 {
-        char *p1 = mountedname ;
         char *p2 = pcname ;
         char *p3 ;
-
         int thisdrive  ;
 
 // teste si unit‚ pr‚cis‚e dedans...
