@@ -13,7 +13,7 @@ guru    = no
 debug   = no
 sound   = yes
 profile = no
-
+gus = no
 
 EXE = ST                     # nom de l'ex‚cutable
 OBJDIR = objects             # r‚pertoire pour objets
@@ -27,7 +27,7 @@ LIB2= gravis\ultra1wc.lib
 ASMFLAGS = /m2 /z /zi /i$(INCDIR)
 CFLAGS   = /zq /ox /4s /7 /d2 /s /zp4 /w3 /i=$(INCDIR)
 #LNKOPT   = SYSTEM dos4g DEBUG all OPTION SYMFILE=$(EXE)
-LNKOPT   = SYSTEM pmodew DEBUG all LIB $(LIB1) LIB $(LIB2) OPTION SYMFILE=$(EXE)
+LNKOPT   = SYSTEM pmodew DEBUG all OPTION SYMFILE=$(EXE)
 
 SIMU_OBJECTS = $(OBJDIR)\pchard.obj &
 	       $(OBJDIR)\events.obj &
@@ -59,8 +59,7 @@ OBJECTS =      $(OBJDIR)\general.obj &
 
 
 SOUND_OBJECTS = $(OBJDIR)\ym2149.obj &
-	       $(OBJDIR)\sound.obj &
-                $(OBJDIR)\gus.obj
+	       $(OBJDIR)\sound.obj 
 
 INCLUDES = $(INCDIR)\cpu68.h $(INCDIR)\simu68.inc $(INCDIR)\chips.inc
 
@@ -84,6 +83,10 @@ CFLAGS += /dSOUND
 ASMFLAGS += /dSOUND
 !endif
 
+!ifeq gus yes
+SOUND_OBJECTS += $(OBJDIR)\gus.obj
+LNKOPT += LIB $(LIB1) LIB $(LIB2)
+!endif
 
 $(EXE).exe: $(OBJECTS) $(SIMU_OBJECTS) $(SOUND_OBJECTS) $(INCLUDES) $(LNK)
 	wlink $(LNKOPT) @$(LNK)

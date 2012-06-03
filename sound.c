@@ -291,13 +291,26 @@ int scan_env(char *penv, char id, unsigned int *value, int base)
         return found ;
 }
 
-
-
+#ifdef gus
 extern int  detect_gus(void) ;
 extern int init_gus(void) ;
 extern void deinit_gus(void) ;
 extern void pause_gus(void) ;
 extern void continue_gus(void) ;
+#else
+//
+// to allow linking without gus support 
+//
+static int detect_gus(void) {
+    return 0;
+}
+static int init_gus(void) {
+    return -1;
+}
+static void deinit_gus(void) {}
+static void pause_gus(void) {}
+static void continue_gus(void) {}
+#endif
 
 int detect_sb() ;
 

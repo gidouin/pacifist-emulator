@@ -11,14 +11,14 @@ The last release of PaCifiST was on 1998-06-07 (0.49b), and unfortunately, I was
 The sources are dated from 1998-11-20, and the emulator is not working properly. Mainly, the MFP emulation is broken and at this time I can't understand it back.
 Too bad I was not using a proper VCS back them.
 
-Be warned: The sources are a big mess of C and i386 assembler. I'm only publishing them for digital preservation.
+Be warned: The sources are a big mess of C and i386 assembler. I'm only publishing them for digital preservation. Have a look at SainT or Hatari for modern emulators.
 
 Thanks to Arnaud Carré, coder of YM2149 and SoundBlaster part for permission to distribute the code he wrote.
 
 To build the executable, you will need some legacy tools:
 * TASM      (tested: Turbo Assembler 4)
 * Watcom C  (tested: Watcom C 10.0)
-* Gravis ultrasound SDK in gravis/ folder (not sure yet if I can distribute them)
+* Gravis ultrasound SDK in gravis/ folder (optional, as I'm not sure yet if I can distribute them)
 
 dos4gw and pmode/w dos extenders are supported. You can use DOSBox or a DOS prompt if still have one.
 
